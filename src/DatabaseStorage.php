@@ -58,6 +58,7 @@ class DatabaseStorage implements Storage
         $metrics->addIndex(['name']);
         $metrics->addIndex(['value']);
         $metrics->addIndex(['name', 'type', 'value']);
+        $metrics->setPrimaryKey( 'id' );
 
         $queries = $schema->toSql( $this->db->getDatabasePlatform() );
         foreach ( $queries as $query ) {
