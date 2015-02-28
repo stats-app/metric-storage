@@ -51,7 +51,7 @@ class DatabaseStorage implements Storage
                 $sql->getSqlStringForSqlObject( $table ),
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch ( \PDOException $e ) {
+        } catch ( \Exception $e ) {
             //probably already done
         }
     }
