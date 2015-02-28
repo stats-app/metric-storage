@@ -28,8 +28,7 @@
 
     "require": {
         "tomverran/metric-objects": "dev-master",
-        "zendframework/zend-db": "2.3.*@dev",
-        "ext-pdo": "*"
+        "doctrine/dbal": "2.5.*"
     },
 
     "require-dev": {

@@ -6,7 +6,7 @@
  * Time: 3:56 PM
  */
 namespace TomVerran\Stats\Storage;
-use Zend\Db\Adapter\Adapter;
+use TomVerran\Stats\Storage\Database\SqliteConfiguration;
 
 class DatabaseStorageTest extends AbstractStorageTest
 {
@@ -15,11 +15,9 @@ class DatabaseStorageTest extends AbstractStorageTest
      */
     public function getStorage()
     {
-        unlink( 'sqlite.db' );
-        $adapter = new Adapter(array(
-            'driver' => 'Pdo_Sqlite',
-            'database' => 'sqlite.db'
-        ));
-        return new DatabaseStorage( $adapter );
+        if ( file_exists('sqlite.db' ) ) {
+            unlink( 'sqlite.db' );
+        }
+        return new DatabaseStorage( new SqliteConfiguration( 'sqlite.db' ) );
     }
 }
