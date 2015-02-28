@@ -51,6 +51,7 @@ class DatabaseStorage implements Storage
         $schema = new Schema;
         $metrics = $schema->createTable('metrics');
         $metrics->addColumn( 'id', 'integer', ['autoincrement' => true] );
+        $metrics->addColumn( 'time', 'time' );
         $metrics->addColumn( 'name', 'string', ['length' => 255] );
         $metrics->addColumn( 'value', 'float' );
         $metrics->addColumn( 'type', 'string', ['length' => 255] );
@@ -91,7 +92,7 @@ class DatabaseStorage implements Storage
                      ->setParameter( 0, $name );
 
         $result = $select->execute()->fetch();
-        return new Metric( $result['name'], $result['value'], $result['type'] );
+        return new Metric( $result['name'], $result['value'], $result['type'], $result['time'] );
     }
 
     /**
@@ -125,6 +126,7 @@ class DatabaseStorage implements Storage
     {
         $data = [
             'id' => $this->getMaximumId() + 1,
+            'time' => $metric->getTimestamp(),
             'name' => $metric->getName(),
             'value' => $metric->getValue(),
             'type' => $metric->getType()

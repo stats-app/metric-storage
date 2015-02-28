@@ -488,7 +488,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:stats-app/metric-objects.git",
-                "reference": "7dc63595fc1a00d929e718f240f17fcb6a3a5472"
+                "reference": "dc0600322c8a6683a7d4699e035a18bd58fdeae9"
             },
             "type": "library",
             "autoload": {
@@ -508,7 +508,7 @@
             ],
             "description": "PHP Objects to represent DataDog metrics etc",
             "homepage": "https://carefulcoder.co.uk",
-            "time": "2015-02-28 15:21:54"
+            "time": "2015-02-28 22:27:49"
         }
     ],
     "packages-dev": [
