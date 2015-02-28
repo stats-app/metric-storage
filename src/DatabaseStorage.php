@@ -42,7 +42,7 @@ class DatabaseStorage implements Storage
         $table = new CreateTable( 'metrics' );
         $table->addColumn( new Column\Integer( 'id' ) );
         $table->addColumn( new Column\Varchar( 'name', 255 ) );
-        $table->addColumn( new Column\Float( 'value', 2, 4 ) );
+        $table->addColumn( new Column\Float( 'value', 6, 6 ) );
         $table->addColumn( new Column\Varchar( 'type', 255 ) );
         $sql = new Sql( $this->db );
 
