@@ -56,4 +56,13 @@ class ArrayStorage implements Storage
         $series = new MetricSeries( $name, $values );
         return $series;
     }
+
+    /**
+     * Get the names of all metrics saved currently.
+     * @return array
+     */
+    public function getMetricNames()
+    {
+        return array_unique( array_keys( $this->metrics ) );
+    }
 }

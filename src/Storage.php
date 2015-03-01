@@ -32,4 +32,10 @@ interface Storage
      * @return mixed
      */
     public function store( Metric $metric );
+
+    /**
+     * Get the names of all metrics saved currently.
+     * @return array
+     */
+    public function getMetricNames();
 } 

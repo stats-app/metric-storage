@@ -63,4 +63,22 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetMetricNames()
+    {
+        $names = ['a', 'a', 'b', 'c'];
+        $expectedOutput = array_unique( $names );
+
+        foreach( ['a', 'b', 'c'] as $metricName ) {
+            $metric = new Metric( $metricName, 1, 'counter', time() );
+            $this->storage->store( $metric );
+        }
+
+        $namesFromStorage = $this->storage->getMetricNames();
+        $this->assertCount( count( $expectedOutput ), $namesFromStorage );
+
+        foreach ( $namesFromStorage as $name ) {
+            $this->assertContains( $name, $expectedOutput );
+        }
+    }
+
 } 

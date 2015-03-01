@@ -136,4 +136,21 @@ class DatabaseStorage implements Storage
 
         $this->db->insert('metrics', $data );
     }
+
+    /**
+     * Get the names of all metrics saved currently.
+     * @return array
+     */
+    public function getMetricNames()
+    {
+        $qb = new QueryBuilder( $this->db );
+        $select = $qb->select( 'name' )->from( 'metrics' )->groupBy( 'name' );
+        $results = $select->execute()->fetchAll();
+
+        foreach ( $results as &$result ) {
+            $result = array_shift( $result );
+        }
+
+        return $results;
+    }
 }
