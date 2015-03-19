@@ -44,7 +44,7 @@ class ArrayStorage implements Storage
      * @param string $name The metric name
      * @return MetricSeries
      */
-    public function getMetricSeries( $name )
+    public function getMetricSeries( $name, \DateTime $from = null, \DateTime $to = null )
     {
         $values = [];
         usort( $this->metrics[$name], function( Metric $metric1, Metric $metric2 ) {
@@ -52,6 +52,15 @@ class ArrayStorage implements Storage
         } );
 
         foreach( $this->metrics[$name] as $metric ) {
+
+            /** @var Metric $metric */
+            if( $from && $metric->getTimestamp() < $from->getTimestamp() ) {
+                continue;
+            }
+
+            if ( $to && $metric->getTimestamp() > $to->getTimestamp() ) {
+                break;
+            }
 
             /** @var Metric $metric */
             $values[] = $metric->getValue();

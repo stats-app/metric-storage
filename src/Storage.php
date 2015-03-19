@@ -7,6 +7,7 @@
  */
 
 namespace TomVerran\Stats\Storage;
+use DateTime;
 use TomVerran\Stats\Metric;
 use TomVerran\Stats\MetricSeries;
 
@@ -22,9 +23,11 @@ interface Storage
     /**
      * Get a metric series - a series of values for a given metric name
      * @param string $name The metric name
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return MetricSeries
      */
-    public function getMetricSeries( $name );
+    public function getMetricSeries( $name, DateTime $from = null, DateTime $to = null );
 
     /**
      * Store a metric

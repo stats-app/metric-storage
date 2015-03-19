@@ -1,5 +1,6 @@
 <?php
 namespace TomVerran\Stats\Storage;
+use DateTime;
 use PHPUnit_Framework_TestCase;
 use TomVerran\Stats\Metric;
 use TomVerran\Stats\MetricSeries;
@@ -48,7 +49,7 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
     public function testCanGetMetricSeries()
     {
         for( $i = 0; $i < 100; $i++ ) {
-            $metric = new Metric('number', $i, 'counter', time() );
+            $metric = new Metric('number', $i, 'counter', time() + $i );
             $this->storage->store( $metric );
         }
 
@@ -79,6 +80,19 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
         foreach( $metricSeries->getValues() as $value ) {
             $this->assertEquals( $expectedValue--, $value );
         }
+    }
+
+    public function testToAndFromConstraintsInGetMetricSeries()
+    {
+        $backInTheDay = DateTime::createFromFormat('Y-m-d H:i:s', '1989-12-31 00:00:00' );
+        for( $day = 0; $day < 365; $day++ ) {
+            $backInTheDay->modify( '+1 day' );
+            $this->storage->store( new Metric('90s', $day+1, 'number', $backInTheDay->format( 'U' ) ) );
+        }
+
+        $metrics = $this->storage->getMetricSeries( '90s', $firstDay = DateTime::createFromFormat('Y-m-d H:i:s', '1990-01-01 00:00:00'),
+                                                           $lastDay = DateTime::createFromFormat( 'Y-m-d H:i:s', '1990-01-31 00:00:00' ) );
+        $this->assertCount( 31, $metrics->getValues() );
     }
 
     public function testGetMetricNames()

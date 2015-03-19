@@ -102,11 +102,21 @@ class DatabaseStorage implements Storage
      * @param string $name The metric name
      * @return MetricSeries
      */
-    public function getMetricSeries( $name )
+    public function getMetricSeries( $name, \DateTime $from = null, \DateTime $to = null )
     {
         $qb = new QueryBuilder( $this->db );
-        $select = $qb->select( 'm.*' )->from( 'metrics', 'm' )->where( 'm.name = ?' )->orderBy( 'm.time', 'ASC' )
-                     ->setParameter( 0, $name );
+        $select = $qb->select( 'm.*' )->from( 'metrics', 'm' )->where( 'm.name = :name' )->orderBy( 'm.time', 'ASC' )
+                     ->setParameter( ':name', $name );
+
+        if ( $from ) {
+            $dbFrom = $this->db->convertToDatabaseValue( $from, 'datetime' );
+            $select->where('m.time >= :from')->setParameter( ':from', $dbFrom );
+        }
+
+        if ( $to ) {
+            $dbTo = $this->db->convertToDatabaseValue( $to, 'datetime' );
+            $select->where('m.time <= :to')->setParameter( ':to', $dbTo );
+        }
 
         $results = $select->execute()->fetchAll();
 
