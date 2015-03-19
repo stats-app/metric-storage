@@ -105,7 +105,7 @@ class DatabaseStorage implements Storage
     public function getMetricSeries( $name )
     {
         $qb = new QueryBuilder( $this->db );
-        $select = $qb->select( 'm.*' )->from( 'metrics', 'm' )->where( 'm.name = ?' )
+        $select = $qb->select( 'm.*' )->from( 'metrics', 'm' )->where( 'm.name = ?' )->orderBy( 'm.time', 'ASC' )
                      ->setParameter( 0, $name );
 
         $results = $select->execute()->fetchAll();

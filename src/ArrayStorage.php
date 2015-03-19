@@ -47,6 +47,10 @@ class ArrayStorage implements Storage
     public function getMetricSeries( $name )
     {
         $values = [];
+        usort( $this->metrics[$name], function( Metric $metric1, Metric $metric2 ) {
+            return $metric1->getTimestamp() - $metric2->getTimestamp();
+        } );
+
         foreach( $this->metrics[$name] as $metric ) {
 
             /** @var Metric $metric */

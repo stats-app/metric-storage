@@ -63,6 +63,24 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testMetricSeriesAreOrderedByTimestamp()
+    {
+        $now = time();
+        $soon = $now + 100;
+        for( $i = 0; $i < 100; $i++ ) {
+            $metric = new Metric('number', $i, 'counter', ($soon--) - $now );
+            $this->storage->store( $metric );
+        }
+
+        $metricSeries = $this->storage->getMetricSeries( 'number' );
+        $this->assertCount( 100, $metricSeries->getValues() );
+
+        $expectedValue = 99;
+        foreach( $metricSeries->getValues() as $value ) {
+            $this->assertEquals( $expectedValue--, $value );
+        }
+    }
+
     public function testGetMetricNames()
     {
         $names = ['a', 'a', 'b', 'c'];
