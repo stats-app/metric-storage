@@ -48,8 +48,9 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
 
     public function testCanGetMetricSeries()
     {
+        $time = time();
         for( $i = 0; $i < 100; $i++ ) {
-            $metric = new Metric('number', $i, 'counter', time() + $i );
+            $metric = new Metric('number', $i, 'counter', $time + $i );
             $this->storage->store( $metric );
         }
 
@@ -58,8 +59,11 @@ abstract class AbstractStorageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'number', $metricSeries->getName() );
 
         $expectedValue = 0;
-        foreach( $metricSeries->getValues() as $value ) {
+        $expectedKey = $time;
+
+        foreach( $metricSeries->getValues() as $key => $value ) {
             $this->assertEquals( $expectedValue, $value );
+            $this->assertEquals( $expectedKey++, $key );
             $expectedValue++;
         }
     }

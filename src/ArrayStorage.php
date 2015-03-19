@@ -63,7 +63,7 @@ class ArrayStorage implements Storage
             }
 
             /** @var Metric $metric */
-            $values[] = $metric->getValue();
+            $values[$metric->getTimestamp()] = $metric->getValue();
         }
 
         $series = new MetricSeries( $name, $values );

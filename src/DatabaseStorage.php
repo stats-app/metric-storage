@@ -122,7 +122,10 @@ class DatabaseStorage implements Storage
 
         $values = [];
         foreach( $results as $point ) {
-            $values[] = $point['value'];
+
+            /** @var \DateTime $time */
+            $time = $this->db->convertToPHPValue( $point['time'], 'datetime' );
+            $values[$time->format( 'U' )] = $point['value'];
         }
 
         $series = new MetricSeries( $name, $values );
